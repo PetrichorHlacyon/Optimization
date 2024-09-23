@@ -1,0 +1,43 @@
+\contentsline {chapter}{\numberline {第一章\hspace {.3em}}Optimization Basis}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}KKT Conditions}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Derivatives}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Matrix Calculus}{2}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Notation}{3}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Basic Methods}{3}{subsection.1.3.2}%
+\contentsline {subsection}{\numberline {1.3.3}Derivative Properties and Other Prerequisites}{4}{subsection.1.3.3}%
+\contentsline {subsection}{\numberline {1.3.4}Some Examples, Proofs and Applications}{6}{subsection.1.3.4}%
+\contentsline {subsubsection}{$\mathbf {f(x):\symbb {R}\rightarrow \symbb {R}}$}{6}{subsubsection*.2}%
+\contentsline {subsubsection}{$\mathbf {f(x):\symbb {R}^{m\times 1}\rightarrow \symbb {R}}$}{7}{subsubsection*.3}%
+\contentsline {subsubsection}{$\mathbf {f(x):\symbb {R}^{m\times n}\rightarrow \symbb {R}}$}{8}{subsubsection*.4}%
+\contentsline {subsubsection}{$\mathbf {f(x):\symbb {R}^{m\times 1}\rightarrow \symbb {R}^{n\times 1}}$}{10}{subsubsection*.5}%
+\contentsline {subsubsection}{$\mathbf {f(x):\symbb {R}^{m\times n}\rightarrow \symbb {R}^{p\times q}}$}{11}{subsubsection*.6}%
+\contentsline {section}{\numberline {1.4}Random Vectors, Random Matrices, and Their Expected Values }{11}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Convexity and Smoothness}{11}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Cones and Optimality Conditions}{13}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Optimality Conditions}{14}{section.1.7}%
+\contentsline {section}{\numberline {1.8}Bregman Divergence}{15}{section.1.8}%
+\contentsline {chapter}{\numberline {第二章\hspace {.3em}}Gradient-besed Methods}{17}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Projected Gradient, Proximal Gradient and Coordinate Descent Method}{17}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Mirror Descent}{18}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Subgradient Method}{18}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Distributed Subgradient Methods \footnote {A. Nedic and A. Ozdaglar, "Distributed Subgradient Methods for Multi-Agent Optimization," in IEEE Transactions on Automatic Control, vol. 54, no. 1, pp. 48-61, Jan. 2009, doi: 10.1109/TAC.2008.2009515}}{21}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}The Origin of Distributed Strategies \footnote {A. D. Domínguez-García and C. N. Hadjicostis, "Distributed strategies for average consensus in directed graphs," 2011 50th IEEE Conference on Decision and Control and European Control Conference, Orlando, FL, USA, 2011, pp. 2124-2129, doi: 10.1109/CDC.2011.6160462.}}{21}{subsection.2.4.1}%
+\contentsline {chapter}{\numberline {第三章\hspace {.3em}}Traditional Second-Order Methods}{25}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Newton Method}{25}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Quasi-Newton Method}{25}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Secant Equation}{25}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Hessian Updating}{25}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}DFP(Davidon-Fletcher-Powell)}{26}{subsection.3.2.3}%
+\contentsline {chapter}{\numberline {第四章\hspace {.3em}}Online Optimization}{27}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Unconstrained and Constrained Gradient Method for Ordinary Problems}{27}{section.4.1}%
+\contentsline {section}{\numberline {4.2}First-Order Algorithms for Online Optimization}{28}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Online Gradient Descent}{28}{subsection.4.2.1}%
+\contentsline {section}{\numberline {4.3}Second-Order Methods for Online Optimization}{31}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Regularization}{31}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Bandit Convex Optimization}{31}{section.4.5}%
+\contentsline {chapter}{\numberline {第五章\hspace {.3em}}Gossip-based Computation}{32}{chapter.5}%
+\contentsline {chapter}{\numberline {第六章\hspace {.3em}}Second-order Methods}{33}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Newton's Method and Damped Newton's Method}{33}{section.6.1}%
+\contentsline {chapter}{\numberline {第七章\hspace {.3em}}Latex Notes}{34}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Instructions}{34}{section.7.1}%
+\contentsline {chapter}{\numberline {第八章\hspace {.3em}}Github Notes}{35}{chapter.8}%

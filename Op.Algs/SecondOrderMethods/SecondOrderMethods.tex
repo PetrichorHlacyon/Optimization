@@ -1,0 +1,56 @@
+\ifx\allfiles\undefined
+\input{../config/config}
+\begin{document}
+	% \input{../config/cover} % 单独编译时，其实不用编译封面目录之类的，如需要不注释这句即可
+	\else
+	\fi
+	%  ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 正文部分
+	\chapter{Traditional Second-Order Methods}
+	\section{Newton Method}
+	
+	
+	\section{Quasi-Newton Method}
+	 This note is concluded by the lecture in \cite{yudongchen2024nonlinearoptimization,arora2004computationalmethodsforunconstrainedminimization}. This course is a state-of-art course and introduces online optimization, mirror descent, and etc.
+	
+	The key idea is to find a appropriate estimation of Hessian matrix, and this estimation is good estimator and cheap to form. This approximate Hessian is only associated with function values and gradient. \textbf{The approximate Hessian or its inverse is kept symmetric as well as positive definite\cite{arora2004computationalmethodsforunconstrainedminimization}.}
+	
+	\emph{There are two critical elements in the research Quasi-Newton Methods. Firstly, it is the update rule of approximate Hessian, and how to find a good enough method to approximate. Secondly, secant equation is important to measure the wellness of approximation.}
+	
+	\subsection{Secant Equation}
+	$$
+	B_{k+1}s_k=y_k
+	$$
+	where $s_k=\alpha_k p_k,y_k=\nabla f(x_{k+1})-\nabla f(x_k)$.
+	
+	\subsection{Hessian Updating}
+	\textbf{Rank-One Update}
+	\par Update formula is $B_{k+1} = B_k+\beta_k u_k u_{k}^T$, where the parameters $\beta_k,u_k$ are determined by \emph{secant equation}.
+	By substitute $B_{k+1}$ of $	B_{k+1}s_k=y_k$ with $B_{k+1} = B_k+\beta_k u_k u_{k}^T$, we have,
+	\begin{equation} \label{formula rank one update1}
+		\begin{split}
+				&(B_k+\beta_k u_k u_{k}^T)s_k=y_k \\
+				\Leftrightarrow & \beta_k u_k\langle u_k,s_k\rangle = y_k-B_ks_k\\
+				\Leftrightarrow & u_k =\frac{y_k-B_k s_k}{\beta_k\langle u_k,s_k\rangle} \quad \text{($\langle u_k,s_k\rangle$ is a constant.)}
+		\end{split}
+	\end{equation}
+	Multiply a $s_k^T$ on the left, the equation $\beta_k u_k\langle u_k,s_k\rangle = y_k-B_ks_k$ becomes,
+	\begin{equation} \label{formula rank one update2}
+	\beta_k (\langle u_k,s_k\rangle)^2 = \langle s_k,y_k-B_ks_k\rangle
+	\end{equation}
+	Substitute the $u_k,\beta_k$ in $B_{k+1} = B_k+\beta_k u_k u_{k}^T$ with \fbox{Formula.\ref{formula rank one update1}},\fbox{Formula.\ref{formula rank one update2}}.
+	
+	Eventually, the update formula for $B_{k+1}$ is,
+	$$
+		B_{k+1} = B_{k} +\frac{(y_k-B_k s_k)(y_k-B_k s_k)^T}{\langle s_k,y_k-B_k s_k\rangle}
+	$$
+	\emph{But this method is unstable, the size and sign of $\langle s_k,y_k-B_k s_k\rangle$ will effect this algorithm.} The positive sign is to guarantee to generate a positive definite matrix $B_{k+1}$. The small size will lead to numerical difficulties. 
+	
+	
+	\textbf{Rank-Two Update}
+	\subsection{DFP(Davidon-Fletcher-Powell)}
+	
+	
+	%  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 正文部分
+	\ifx\allfiles\undefined
+\end{document}
+\fi

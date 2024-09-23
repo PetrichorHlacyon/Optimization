@@ -1,0 +1,151 @@
+\ifx\allfiles\undefined
+\input{../config/config}
+\begin{document}
+	% \input{../config/cover} % 单独编译时，其实不用编译封面目录之类的，如需要不注释这句即可
+	\else
+	\fi
+	%  ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 正文部分
+	\chapter{Online Optimization} 
+	
+	This note is the conclusion of \cite{hazan2023introductiononlineconvexoptimization}.
+	
+	\section{Unconstrained and Constrained Gradient Method for Ordinary Problems}
+		The candidate points can be founded in whole space at unconstrained situation. And whatever the points is, it always lands in set. Different from this, the selected points maybe not in set at constrained situation. This causes tiny difference of update formulations.
+		\begin{equation*}
+			\begin{split}
+				x_{k+1} &= x_k -\eta_k \nabla f(x_k) \quad \quad \text{Unconstrained Situation} \\
+				x_{k+1} &= [x_k -\eta_k \nabla f(x_k)]_{\mathcal{K}}^+ \quad \quad \text{Constrained Situation}
+			\end{split}
+		\end{equation*}
+		
+		\begin{Properties}{The Convergence Rate of Constrained Gradient Descent}{}
+			For constrained minimization of $\gamma$\emph{-well-conditioned functions} and step size $\eta_k=1/\beta$, the algorithm of projected gradient method converges as,
+			$$
+			h_{k+1} = f(x_{k+1})-f(x^*)\le h_1 e^{-\frac{\gamma k}{4}}
+			$$
+		\end{Properties}
+		
+		The previous proof methods are complex and abundant and have to analyses from scratch, so a new reduction analysis is explored by \cite{}. This \textbf{reduction method} will used to derive near-optimal convergence rate for non-strongly convex, or non-smooth and so on.
+		
+	\section{First-Order Algorithms for Online Optimization}
+		The problem setting is like that,
+		\begin{equation*}
+			\begin{split}
+				&\min_x \sum_{t=1}^T f_t(x) \text{ or } \min_{x_i,\forall i\in[T]} \sum_{t=1}^T f_t(x_t) \\
+				&\text{s.t. } x\in \R^d \text{ or } x_i\in\R^{d_i},\forall i \in {1,2,3,...,T}
+			\end{split}
+		\end{equation*}
+		\subsection{Online Gradient Descent}
+			This method is proposed by Zinkevich. In this note, this method only considers the situation that there only has one optimization variable.
+			
+			\begin{them}{Regret Bound of Online Gradient Descent with Step Size $\eta_t = \frac{D}{G\sqrt{t}}$}{} \label{thm:Regret Bound of Online Gradient Descent}
+				Online gradient descent with step size $\eta_t = \frac{D}{G\sqrt{t}}$ guarantees that,
+				$$
+				Regret_T = \sum_{t=1}^T f_t(x_t) - \min_{z\in\K} \sum_{t=1}^T f_t(z) \le\frac{3}{2}GD\sqrt{t}
+				$$
+			\end{them}
+		
+			\begin{them}{General Lower Bound of Regret in the Worst Case}{}
+				Any online convex optimization algorithm incurs $\Omega(DG\sqrt{t})$ regret in the worst case.
+			\end{them}
+		
+			\begin{them}{The Regret Bound for Online Gradient Descent for Strongly Convex Functions}{}
+				Online gradient descent with step size $\eta_t=\frac{1}{\alpha t}$ achieves the following guarantee for all $T$.
+				$$
+				Regret_T \le \frac{G^2}{2\alpha}(1+\log T)
+				$$
+				The selection of step size will affect the regret bound considerably.
+			\end{them}
+			A special case of online convex optimization is the stochastic optimization, which is to minimize a function $f(x)$ with constrain $x\in\K$.
+			\begin{algorithm}[!ht] \label{alg Stochastic Gradient Descent}
+				\caption{Stochastic Gradient Descent}
+				\begin{algorithmic}[1]
+					\Require $\mathcal{O},\K,\{\eta_t\},x_1\in\K$
+					\Ensure $\bar{x}_T=\frac{1}{T}\sum_{t=1}^T x_t$
+					
+					\For {$t=1,2,...,T$}
+						\State Let $\tilde{\nabla}_t= \mathcal{O}(x_t)$; 
+						\State Update and Project 
+						\begin{equation}
+							\begin{split}
+								y_{t+1} = x_t-\eta_t \tilde{\nabla}_t \\
+								x_{t+1} = \prod_{\K} y_{t+1}
+							\end{split}
+						\end{equation}
+					\EndFor
+				\end{algorithmic}
+			\end{algorithm}
+			In \fbox{Alg.\ref{alg Stochastic Gradient Descent}}, the notation $\mathcal{O}(x_t)$ means that sample a gradient at point $x_t$, which is equal to $\tilde{\nabla}_t$, and $\mathbb{E}\{\tilde{\nabla}_t\}=\nabla f(x_t),\mathbb{E}\{||\tilde{\nabla}_t||^2\}\le G^2$.
+			\begin{them}{The Convergence of Stochastic Gradient Descent}{}
+				\fbox{Alg.\ref{alg Stochastic Gradient Descent}} with step size $\eta_t=\frac{D}{G\sqrt{t}}$ guarantees,
+				$$
+				\mathbb{E}\{f(\bar{x}_T)\} \le \min_{z\in\K}f(z) +\frac{3GD}{2\sqrt{T}}
+				$$
+				
+				\textbf{proof}:
+					\begin{equation*} 
+						\begin{split}
+							&\mathbb{E}\{f(\bar{x}_T)\} -f(x^*)  \\
+							= &\mathbb{E}\{f(\frac{1}{T}\sum_{t=1}^Tx_t)\} -f(x^*) \\
+							\le & \mathbb{E}\{\frac{1}{T}\sum_{t=1}^Tf(x_t)\} -f(x^*) \text{ \textbf{(the convexity of function $f$)}} \\
+							=& \frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(f(x_t)) -Tf(x^*) \} \\
+							=& \frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(f(x_t) -f(x^*)) \} \\
+							\le & \frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(\nabla f(x_t)^T(x_t-x^*)) \} \text{\quad($f(x^*)\le f(x_t)+\nabla f(x_t)^T(x^*-x_t)$)} \\
+							=& \frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(\tilde{\nabla}_t^T(x_t-x^*)) \} \fbox{Frame.\ref{CoSGD 1}}\\
+							=& \frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(f_t(x_t)-f_t(x^*)) \} \fbox{Frame.\ref{CoSGD 2}} \\
+							=& \frac{\mathbb{E}\{Regret_T(f_t(x_t))\}}{T} \\
+							\le&\frac{3}{2}GD\sqrt{T} \text{\quad (the $G,D$ is belong to the function $f_t(z) = \tilde{\nabla}_t^Tz$)}
+						\end{split}
+					\end{equation*}
+			\end{them}
+			"That is the magic of SGD; we have matched the nearly optimal convergence rate of first order methods using extreme cheap iterations." \cite{hazan2023introductiononlineconvexoptimization}
+			using extremely cheap iterations. 
+			\begin{framed} \label{CoSGD 1}
+				\begin{equation} 
+					\begin{split}
+				    	&\frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(\nabla f(x_t)^T(x_t-x^*)) \} \text{$x_t\in\R^d$}\\
+				    	=& \frac{1}{T}\mathbb{E}\{\sum_{t=1}^T \sum_{j=1}^d [\nabla f(x_t)]_j[(x_t-x^*)]_j\}  \\
+				    	=&\frac{1}{T}\sum_{t=1}^T \sum_{j=1}^d \mathbb{E}\{[\nabla f(x_t)]_j[(x_t-x^*)]_j\} \\
+				    	=&\frac{1}{T}\sum_{t=1}^T \sum_{j=1}^d \mathbb{E}\{[\tilde{\nabla}_t]_j[(x_t-x^*)]_j\} \\
+				    	=&\frac{1}{T}\mathbb{E}\{\sum_{t=1}^T(\tilde{\nabla}_t^T(x_t-x^*)) \} 
+				    \end{split}
+				\end{equation}
+			\end{framed}
+			\begin{framed} \label{CoSGD 2} 
+				Firstly define $f_t(z) = \tilde{\nabla}_t^Tz$. The regret of it is,
+				$$
+				Regret_T(f_t(z)) = \sum_{t=1}^Tf_t(z) - \min_{x^*\in\K}\sum_{t=1}^Tf_t(x^*)$$
+				So, $Regret_T(f_t(x_t)) = \sum_{t=1}^T(f_t(x_t)-f_t(x^*))$.
+				And according to \fbox{Thm.\ref{thm:Regret Bound of Online Gradient Descent}},
+				$$
+				Regret_T(f_t(x_t)) \le\frac{3}{2}GD\sqrt{T}
+				$$
+				Consider its expectation,
+				$$
+				\mathbb{E}\{Regret_T(f_t(x_t)) = \sum_{t=1}^T \mathbb{E}\{f_t(x_t)\} - \sum_{t=1}^T\mathbb{E}\{f_t(x^*)\} =  \sum_{t=1}^T \nabla f(x_t)^T(x_t-x^*)
+				$$
+			\end{framed}
+		
+		
+		
+	\section{Second-Order Methods for Online Optimization}
+	
+	
+	\section{Regularization}
+	
+	\section{Bandit Convex Optimization}
+	The only difference between \emph{Bandit Convex Optimization(BCO)} and \emph{Online Convex Optimization(OCO)} is that \emph{BCO} is value oracle but \emph{OCO} is gradient and value oracle. \textbf{Bandit algorithm is a kind of policy to balance exploration and exploitation}\cite{anshitou2021banditzhishifenxiangyuzongjie}. For example, a citizen bought a Lottery and won 10 dollars (the reward is 10 dollars), and next time if he sticks to buy this, the exploration is not enough. Because a better lottery may appears. 
+		\begin{remark}{What is "oracle"?}{}
+			Assume a network with some nodes, these nodes maintains some local functions. Different with OCO, these local functions in BCO setting likes a machine, which will return value rather than gradient. Such situations are normal, for trying selling items, we only know the prices each time, and do not know the gradient because the price is not a definite function. There are so many oracle models, such as,
+			\begin{enumerate}
+				\item Value oracle. Given $x$, and return $f(x)$.
+				\item Gradient oracle. Given $x$, and return $\nabla f(x)$.
+				\item First-order oracle. Given $x$, and return $f(x),\nabla f(x)$.
+				\item Stochastic oracle. Given $x$, and return $\nabla f(\tilde x),\mathbb\{\nabla f(\tilde x)\}=\mathbb{E}\{\nabla f(x)\}$.
+			\end{enumerate}
+		\end{remark}
+	
+	%  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 正文部分
+	\ifx\allfiles\undefined
+\end{document}
+\fi

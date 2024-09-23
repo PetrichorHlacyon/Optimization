@@ -1,0 +1,193 @@
+\ifx\allfiles\undefined
+\input{../config/config}
+\begin{document}
+	% \input{../config/cover} % 单独编译时，其实不用编译封面目录之类的，如需要不注释这句即可
+	\else
+	\fi
+	%  ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 正文部分
+	\chapter{Gradient-besed Methods}
+	\section{Projected Gradient, Proximal Gradient and Coordinate Descent Method}
+	
+	\textbf{Projected Gradient Method}
+	
+	About \emph{projected gradient method},
+	\begin{enumerate}
+		\item It is a special case of \emph{proximal gradient method}
+		\item It solves the constrained problem under gradient method, which cannot solve constrained problem without some techniques. And the update rules are similar with gradient method, only adding the procedure of projecting.
+		$$
+		x_{k+1} = [x_k-\eta_k\nabla f(x_k)]^{+}_{\K}
+		$$
+	\end{enumerate}
+	
+	Some keypoints in \emph{projected gradient method},
+	\begin{enumerate}
+		\item The projection has two situations. If the point $x_k-\eta_k\nabla f(x_k)$ is within the feasible region, then the projection to set $\K$ is itself. If the point $x_k-\eta_k\nabla f(x_k)$ is out of the feasible region, then the projection to set $\K$ is a sub-problem, which is,
+		\begin{equation*}
+			\begin{split}
+				&\min_{y\in\K} ||y-\Big(x_k-\eta_k\nabla f(x_k)\Big)||_2 \\
+				\Leftrightarrow &\min_{y\in\K} \frac{1}{2}||y-\Big(x_k-\eta_k\nabla f(x_k)\Big)||_2^2 
+			\end{split}
+		\end{equation*}
+		\item The difficulties of projected gradient method are the calculation of projection. Sometimes the projection is not unique if the set $\K$ is nonconvex. The projection is easy to calculate if sub-problem has closed-form expression or the set is convex and the problem is easy to deal with.
+		\item The geometric explanation of projected gradient method. \textbf{[TODO]}
+		\item The ergodic convergence rate of projected gradient method. \textbf{[TODO]}
+	\end{enumerate}
+	\begin{remark}{What Is Ergodic Convergence Rate}{}
+		The critical role in "Ergodic" convergence rate is ergodic, which means some kinds of average value gradually get closer to the limit point. Or say "The centroid of a point cloud moving towards the limit point"\cite{andersen2024projectedgradientalgorithm}. 
+		
+		If an sequence $\{x_1,x_2,...\}$ is ergodic convergent, then $\lim_{K\rightarrow \infty}\frac{1}{K}\sum_{k=1}^K x_k -x^*=0$. It is not equal to all $x_k$ will get closer to $x^*$ gradually, some of them can be moving away from $x^*$, but the centroid of them gets closer to $x^*$.
+		
+		\textbf{Why Projected Gradient Method is ergodic convergent?}
+		projection do not guarantee the decreases of function value.
+	\end{remark}
+
+	\textbf{Proximal Gradient Method}
+	
+	
+	\section{Mirror Descent}
+	
+	\section{Subgradient Method}
+	
+	Like the steepest descent method, the subgradient method also has a similar updating formulations.
+	$$
+	x_{k+1} = [x_k + \alpha_kg_k]^{+}_{X}
+	$$
+	where $g_k$ represents the subgradient of $f(x)$ at $x_k$. $[\cdot]^{+}_M$ means the Euclidean projection on set $M$, which is equal to this form $\mathop{\arg\min}_{x\in M} ||x-\cdot||_2^2$.
+	
+	\begin{Notes}{\textbf{Proper and Properness}}{}
+		\begin{defn}{}{}
+			"a proper convex function is an extended real-valued convex function with a non-empty domain, that never takes on the value $-\infty$  and also is not identically equal to $+\infty$" \footnote{\url{https://en.wikipedia.org/wiki/Proper_convex_function}}.
+		\end{defn} 
+		This definition is for the situation of \textbf{minimizing a function}, and maximization is similar, which only need add minus to become a maximization problem to a minimization problem. 
+		If the minimum can be $-\infty$, then the optimal point is definitely the point corresponding to the $-\infty$, and this problem is meaningless. And similarly, if identically equal to $+\infty$, then the minimum point does not exist.
+		\begin{Properties}{}{}
+		 1. The sum of two proper convex function is convex but maybe proper. **why?***
+		\end{Properties}
+	\end{Notes}
+
+	\begin{defn}{Subgradient and Subdifferential}{}
+		Given a proper convex function $f:\mathbb{R}^n \rightarrow (-\infty,+\infty]$, we say that a vector $g\in\mathbb{R}^n$is a \underline{subgradient} of $f$ at a point $x \in dom(f)$ if,
+		$$f(z)\ge f(x)+g^T(z-x)\quad,\forall z\in\mathbb{R}^n$$
+		And all subgradients of a point $x$ is called \underline{subdifferetial}, i.e. $\partial f(x)=\{g(x)| f(z)\ge f(x)+g^T(z-x)\quad,\forall z\in\mathbb{R}^n\}$.
+		
+		\textbf{Explanation:}
+		 "a proper convex function $f:\mathbb{R}^n \rightarrow (-\infty,+\infty]$". Because a proper function cannot be $-\infty$, otherwise the minimum points are obvious and meaningless. And cannot always be $+\infty$,otherwise without minimum points.
+		 
+		
+		\begin{Properties}{}{}
+			1. Subdifferential is a closed set. The subdifferential is the union of all subgradients, and subgradient is a closed halfspace. The geometric meaning of a subgradient is that 
+			$$
+			\begin{pmatrix} -g \\1 \end{pmatrix}^T\begin{pmatrix} z \\f(z) \end{pmatrix} \ge \begin{pmatrix} -g \\1 \end{pmatrix}^T\begin{pmatrix} x \\f(x) \end{pmatrix}
+			$$
+			
+			is a closed halfspace $\{z|z \text{ satisfies the above inequality}\}$. 
+			(If normal and any point are known, the halfspace can be expressed.) 
+			
+			2. If $f(x)$ is real-valued, the $\partial f(x)$ is convex, nonempty and compact (closed and bounded).
+		\end{Properties}
+	\end{defn}
+
+	\begin{Notes}{The Geometric Explanation of Subgradient Using Definition}{}
+		The definition of subgradient can be transformed into the following form,
+		$$
+		f(z) - g^Tz\ge f(x)-g^Tx\quad,\forall z\in\mathbb{R}^n
+		$$
+		If there exists a point $x_0$, then the right side of above formulation is a line with $(g(x_0),-1)$ normal and passing through the point $x_0$. The left side is equal to $h(z)=f(z)-g^Tz,\forall z\in\mathbb{R}^n$, and it is a epigraph (the above part of any function) of $f$. 
+		So this definition can be explained as: if subgradient of one points is up to find, then we just draw some lines through it and the lines that are totally lower than epigraph of $f(z)$ are selected. Then this kind of normal is called a subgradient at this point.
+	\end{Notes}
+	Math is like this, learning something intuitively and deduce them mathematically!
+	\begin{Properties}{Subdifferetial and Directional Derivative}{}
+		\textbf{Directional Derivative} along the direction $d$ at point $x$ is defined as,
+		$$
+		f^{'}(x;d) = \lim_{\alpha\downarrow 0} \frac{f(x+\alpha d)-f(x)}{\alpha}
+		$$
+		This is monotonically nonincreasing as $\alpha\downarrow 0$, and proof is given to \ref{subgradientProofs}. It is worth to notice that this nonincreasing property is related to this part of $\frac{f(x+\alpha d)-f(x)}{\alpha}$ and it is monotonically nonincreasing as $\alpha$ getting closer to $0$.
+		\begin{enumerate}[]
+			\item \textbf{(the relation of subdifferetial and directional derivative)}$f^{'}(x;d) = \max_{g\in\partial f(x)}g^{'}d$ when $\partial f(x)$ is compact, nonempty and convex. So if $f(x)$ is differentiable at $x$, then the subgradient is unique at $x$ and equal to $\nabla f(x)$. \\
+		\end{enumerate}
+	\end{Properties}
+
+	\begin{Properties}{}{}
+		
+		\begin{enumerate}
+			\item \textbf{(Subdifferential Boundness )}
+		\end{enumerate}
+	\end{Properties}
+
+	\begin{Properties}{Some Critical Convergence Properties}{}
+		
+	\end{Properties}
+	
+	\begin{Notes}{Some Proofs}{} \label{subgradientProofs}
+		\textbf{Directional erivative is monotonically nonincreasing as $\alpha\downarrow 0$}
+			
+	\end{Notes}
+		% 使用格式是\begin{***}{}{} \end{***} ，需要两个 {}{} ，可以不填，但要有
+		
+
+\section{Distributed Subgradient Methods \protect \footnote{A. Nedic and A. Ozdaglar, "Distributed Subgradient Methods for Multi-Agent Optimization," in IEEE Transactions on Automatic Control, vol. 54, no. 1, pp. 48-61, Jan. 2009, doi: 10.1109/TAC.2008.2009515}}
+	\subsection{The Origin of Distributed Strategies \protect \footnote{A. D. Domínguez-García and C. N. Hadjicostis, "Distributed strategies for average consensus in directed graphs," 2011 50th IEEE Conference on Decision and Control and European Control Conference, Orlando, FL, USA, 2011, pp. 2124-2129, doi: 10.1109/CDC.2011.6160462.}}
+	To study distributed computation and control/decision tasks, some methods have been proposed. In previous works, each node in undirected network repeatedly updates its value as the linear combination of its previous value and the previous values of its neighbors. That is why in distributed subgradient method and etc. the update variable $x$ is instituted by the weighted sum of its neighbors values.
+	
+	\begin{defn}{The Links of Graph, Neighbors and In- and Out- Degrees}{}
+		A distributed system can be conveniently described as a directed graph $\mathscr{G}(\mathcal{V},\mathcal{E})$. The \textbf{\emph{link}} $(j,i)\in\mathcal{E}$ means that node $j$ can receive information from node $i$, which is equal to say that node $i$ is the in-degree node of node $j$. \\
+		The \textbf{\emph{neighbors}} of node $j$ is denoted by $\mathcal{N}_j$, which is the set of all nodes that can transmit information to node $j$. \\
+		The number of neighbors of node $j$ is called the \textbf{\emph{in-degree}} of node $j$ and is denoted by $D_j^{-}=|\mathcal{N}_j|$. The \textbf{\emph{out-degree}} is similar.\\
+		\emph{The intuitive meaning of in-degree of node $j$ is that the number of the source of the information, and the out-degree of node $j$ is that the number of transmitting by node $j$.}
+	\end{defn}
+	The critical procedures are that collecting information from its neighbors and update optimization variables in first step and adjusting the transition matrix (or say \emph{mixing matrix}) by some strategies in second step. So we have the following result,
+	$$
+	\begin{pmatrix} \pi_1(k+1) \\ ...\\ \pi_n{k+1}\end{pmatrix} = \begin{pmatrix} p_{11} & ... & p_{1n} \\ \vdots & &\vdots \\ p_{n1} &... &p_{nn}\end{pmatrix} \begin{pmatrix}  \pi_1(k) \\ ...\\ \pi_n(k)\end{pmatrix}
+	$$
+	Define $\pi(k) =\begin{pmatrix} \pi_1(k) & ...& \pi_n(k)\end{pmatrix}^T, P=[p_{ij}]$, where the matrix $P$ has definitely actual meaning. The index of each row and column can be treated as the index of node. The index from column to row represents the direction of transmitting information.
+	
+	\textbf{Assumption} Node $j$ can only change its self-weight and the weight of its neighbors (i.e. the weight of out-degree links or say the column of matrix $P$).
+	
+	\textbf{The Strategy of Weight Adjustment} In order to produce a \emph{column-stochastic} matrix $P$, the self-weight of node $j$ can be set. And naturally, the other column weight can be set as $p_{ij}=c_{ij}(1-p_{jj}),\forall j\in \mathcal{N}_j$, where $\sum_{i\in\mathcal{N}_j}c_{ij}=1 \text{ and } c_{ij}=0,\forall i\notin\mathcal{N}_j\cup\{j\},c_{ij}>0,\forall i\in\mathcal{N}_j$. 
+	
+	By \textbf{The Strategy of Weight Adjustment}, the nonnegative column-stochastic matrix property can be easily verified and the matrix is also primitive (i.e. regular, $\exists k\in\mathbb{N}^*, s.t. \text{ all elements in }A^k \text{ is bigger than }0$). It can be shown that the matrix $P$ will converge to a doubly stochastic matrix $P_{ss}$ as $k\rightarrow \infty$. A kind of special selection of $P$ will be shown and the selection of $c_{ij}$ is also critical. 
+	
+	\textbf{The Selection of Transition Matrix $P$} \\
+	1. At the beginning, set the self-weight of node $j$ to be $1/(1+D^+_{j})$, and the weight from node $j$ to other neighbors is $c_{ij}/(1+D^+_{j}),\forall i\in\mathcal{N}_j$. So the first iteration of matrix $P$ is that,
+	$$
+	\pi_j(1) = \frac{1}{1+D^+_{j}}\pi_j(0) + \sum_{i\in\mathcal{N}_j} \frac{c_{ij}}{1+D^+_{j}} \pi_i(0)
+	$$
+	Write update of all nodes,
+	\begin{equation*}
+		\begin{split}
+		\pi(1) &= P(0)\pi(0) \\
+		&=(\overline{P}\Delta(0)+(I-\Delta(0)))\pi(0)
+		\end{split}
+	\end{equation*}
+	where the matrix $\overline{P}=[c_{ij}]$ is the column-stochastic matrix \emph{corresponding to the algorithm where each node distributes its values among its neighbors}, and $\Delta(0)=diag(\delta_1(0),...,\delta_n(0))$ is the diagonal matrix with $\delta_j(0)=D_j^+/(1+D_j^+) = 1-p_{jj}(0)$ entry. Detailedly, 
+	$$
+	\overline{P} = \begin{pmatrix} 0 & c_{12} & ... & c_{1n} \\
+								  c_{21} & 0 & ... & c_{2n} \\ 
+							      \vdots & \vdots & ... & \vdots \\
+						      	  c_{n1} & c_{n2} & ... & 0\end{pmatrix}
+	$$
+	\begin{remark}{The Meaning of Decomposing Matrix $P$}{}
+		$$
+		P(k+1) =\underbrace{\overline{P}\Delta(k)}_{\text{the info. to nbd.}}+ \underbrace{(I-\Delta(k))}_{\text{the info. to itself}}
+		$$
+		So, each optimization variable of node $j$ is,
+		$$
+		\pi_j(k+1) = \underbrace{\sum_{i\in\mathcal{N}_j}(c_{ji}\delta_i(k)) \pi_i(k)}_{\text{the info. to itself}}+\underbrace{(1-\delta_j(k))\pi_j(k)}_{\text{the info. to nbd.}}
+		$$
+		So, this kind of decomposition divides the effect of node $j$ into two parts, including its self-effect and the effect from neighbors.
+	\end{remark}
+		In order to make matrix $P$ be a doubly stochastic matrix. \textbf{The core is that iterate the rows' update of the matrix $P$ to get closer to $\boldsymbol{1}$}. 
+	2. After that, define a critical index $\rho_j(k)=\sum_{i\in\mathcal{N}_j}p_{ji}(k)$, which measures the extend of the row sum of matrix $P$ closing to 1. So the update rule of $\delta_j(k)$ is,
+	$$
+	\delta_j(k+1) = \begin{cases}\delta_j(k)\rho_j(k) \quad & \rho_j(k)\le 1  \\
+								 1-\frac{1}{\rho_j(k)}(1-\delta_j(k)) \quad & \rho_j(k)> 1\end{cases}
+	$$
+	\begin{remark}{The Idea of Choosing Update Rule $\delta_j(k)$}{}
+		When $\rho_j(k)\le 1$, the $\delta_j(k+1)$ will decrease, which means the information to node $j$ is not enough. Then the proportion of information to the neighbors of node $j$ will also decrease, and the information will flow largely into itself. By some lemmas, it can be proofed that this update rule will make $\rho$ larger when  $\rho\le 1$ and make $\rho$ smaller when  $\rho> 1$.
+	\end{remark}
+	
+	Finally, \textbf{by this kind of update rules, the $P(k)$ will converge to a doubly stochastic matrix as $k\rightarrow \infty$, and $\pi_j,\forall j\in\{1,2,...,n\}$ will converge to the average sum of initial points, i.e. $\sum_i x_i/n$.}
+		%  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 正文部分
+\ifx\allfiles\undefined
+\end{document}
+\fi
